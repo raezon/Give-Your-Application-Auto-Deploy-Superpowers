@@ -1,6 +1,14 @@
 version: 2.1
 
-# commands:
+orbs: 
+  slack: circleci/slack@4.10.1
+ commands:
+   notify_on_failure:
+     steps:
+      - slack/notify:
+          event: fail
+          channel: ci-cd-pipeline
+          template: basic_fail_1
 #   destroy-environment:
 #     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
 #     parameters:
@@ -49,6 +57,7 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-deps
+      - notify_on_failure
 
   build-backend:
     docker:
@@ -66,6 +75,7 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-deps
+      - notify_on_failure
 
   test-frontend:
     docker:
@@ -80,6 +90,7 @@ jobs:
             cd frontend
             npm install
             npm test
+      - notify_on_failure
                 
   test-backend:
     docker:
@@ -97,6 +108,7 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-deps
+      - notify_on_failure
             
   scan-frontend:
     docker:
@@ -110,8 +122,8 @@ jobs:
           command: |
             cd frontend
             npm install
-            npm audit fix
-            npm audit --audit-level=critical
+            npm audit fix --audit-level=critical --force
+      - notify_on_failure
 
   scan-backend:
     docker:
@@ -125,8 +137,8 @@ jobs:
           command: |
             cd backend
             npm install
-            npm audit fix
-            npm audit --audit-level=critical
+            npm audit fix --audit-level=critical --force
+      - notify_on_failure
 
   # deploy-infrastructure:
   #   docker:
@@ -273,27 +285,14 @@ jobs:
   #         command: |
   #           # your code here
   #     # Here's where you will add some code to rollback on failure  
-
-cleanup:
+  notify_on_success:
     docker:
-      # Docker image here
+      - image: cimg/node:13.8.0
     steps:
-      # Checkout code from git
-      - run:
-          name: Get old stack workflow id
-          command: |
-            # your code here
-            export OldWorkflowID="the id here"
-            export STACKS=[] #put the list of stacks here
-      - run:
-          name: Remove old stacks and files
-          command: |
-            if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
-            then
-              # your code here
-            fi
-            
-
+      - slack/notify:
+          event: pass
+          channel: ci-cd-pipeline
+          template: success_tagged_deployment  
 workflows:
   default:
     jobs:
@@ -307,6 +306,12 @@ workflows:
           requires: [build-backend]
       - scan-frontend:
           requires: [build-frontend]
+      - notify_on_success
+          requires:
+            - test-frontend
+            - test-backend
+            - scan-backend
+            - scan-frontend
       # - deploy-infrastructure:
       #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       #     filters:
