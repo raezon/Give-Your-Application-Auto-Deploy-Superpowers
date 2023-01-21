@@ -3,7 +3,7 @@ version: 2.1
 orbs: 
   slack: circleci/slack@4.10.1
   commands:
-    notify_on_failure:
+    notify_on_failure :
       steps:
         - slack/notify:
             event: fail
@@ -54,10 +54,11 @@ jobs:
             cd frontend
             npm install
             npm run build
+      - notify_on_failure
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-deps
-      - notify_on_failure
+      
 
   build-backend:
     docker:
@@ -72,10 +73,10 @@ jobs:
             cd backend
             npm install
             npm run build
+      - notify_on_failure
       - save_cache:
           paths: [backend/node_modules]
           key: backend-deps
-      - notify_on_failure
 
   test-frontend:
     docker:
