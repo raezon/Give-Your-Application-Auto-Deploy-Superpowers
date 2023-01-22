@@ -218,25 +218,24 @@ jobs:
       - destroy-environment
     
 
-    run-migrations:
-      docker:
-      # Docker image here that supports NodeJS
-        - image: circleci/node:13.8.0
-      steps:
-        - checkout
-        - run:
-            name: Run migrations
-            command: |
-              cd backend
-              npm install
-              npm run migrations > migrations_dump.txt
-        - run:
-            name: Send migration status to kvdb.io
-            command: |
-              curl https://kvdb.io/${KVDB_BUCKET}/migration_{CIRCLE_WORKFLOW_ID:0:7}  -d '1'
-          
-        - destroy-environment
-        - revert-migrations     
+  run-migrations:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: Run migrations
+          command: |
+            cd backend
+            npm install
+            npm run migrations > migrations_dump.txt
+      - run:
+          name: Send migration status to kvdb.io
+          command: |
+            curl https://kvdb.io/${KVDB_BUCKET}/migration_{CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+        
+      - destroy-environment
+      - revert-migrations     
 
   # deploy-frontend:
   #   docker:
