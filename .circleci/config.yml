@@ -213,6 +213,7 @@ jobs:
       - run:
           name: Configure server
           command: |
+            cat ./.circleci/ansible/inventory.txt
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
       - destroy-environment
@@ -223,6 +224,7 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
+      - install_awscli
       - run:
           name: Run migrations
           command: |
@@ -314,7 +316,7 @@ jobs:
   #     # Here's where you will add some code to rollback on failure  
   notify_on_success:
     docker:
-      - image: 'cimg/base:stable'
+      - image: 'cimg/base'
     steps:
       - slack/notify:
           event: pass
@@ -333,12 +335,6 @@ workflows:
           requires: [build-backend]
       - scan-frontend:
           requires: [build-frontend]
-      - notify_on_success :
-          requires:
-            - test-frontend
-            - test-backend
-            - scan-backend
-            - scan-frontend
       - deploy-infrastructure:
           requires: [test-frontend, test-backend, scan-frontend, scan-backend]
           filters:
