@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  slack: circleci/slack@dev:1a6bb6df2c4c147e3742ded5af62584a2dc3df43
+  slack: circleci/slack@4.12.1
 
 commands:
   notify_on_failure:
@@ -315,7 +315,7 @@ jobs:
   #     # Here's where you will add some code to rollback on failure  
   notify_on_success:
     docker:
-      - image: cimg/node:13.8.0
+      - image: 'cimg/base:stable'
     steps:
       - slack/notify:
           event: pass
