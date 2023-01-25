@@ -229,9 +229,7 @@ jobs:
           name: Run migrations
           command: |
             cd backend
-            npm i
-            npm audit fix --audit-level=critical --force
-            npm run build
+            npm install
             npm run migrations > migrations_dump.txt
       - run:
           name: Send migration status to kvdb.io
