@@ -1,0 +1,11 @@
+AKIAYXP5KLK7CB24QKO2
+vpB6WcH3jIA43congzHlhNGPwT6XZznoWKaI77Dw
+
+raezon-narimane-db
+postgres
+udapeople-dbvpB6WcH3jIA43co
+
+udapeople
+
+bucket
+raezon-bucket
