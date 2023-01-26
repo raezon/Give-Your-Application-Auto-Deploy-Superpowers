@@ -219,32 +219,28 @@ jobs:
       - destroy-environment
     
 
-run-migrations:
+  run-migrations:
     docker:
       - image: cimg/node:13.8.0
+    
     steps:
-      # Checkout code from git
       - checkout
       - attach_workspace:
           at: ~/
-      - restore_cache:
-          keys: [backend-build]
       - run:
           name: Run migrations
           command: |
-            # Your code here 
             cd backend
-            npm install
-            # Run and save the migration output
+            npm i
             npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
       - run:
-          name: Send migration results to kvdb.io 
+          name: Send migration status to kvdb.io
           command: |
             curl https://kvdb.io/${KVDB_BUCKET}/migration_{CIRCLE_WORKFLOW_ID:0:7}  -d '1'
-      # Here's where you will add some code to rollback on failure      
-      - destroy-environment   
-      - revert-migrations      
+        
+      - destroy-environment
+      - revert-migrations     
 
   # deploy-frontend:
   #   docker:
