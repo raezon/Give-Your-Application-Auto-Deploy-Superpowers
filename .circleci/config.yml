@@ -221,19 +221,18 @@ jobs:
 
   run-migrations:
     docker:
-      - image: cimg/node:13.8.0
-    
+      - image: cimg/node:13.0.0
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/
+      - install_awscli
       - run:
           name: Run migrations
           command: |
             cd backend
             npm i
-            npm run migrations > migrations_dump.txt
-            cat migrations_dump.txt
+            npm audit fix
+            npm run build
+            npm run migrations
       - run:
           name: Send migration status to kvdb.io
           command: |
