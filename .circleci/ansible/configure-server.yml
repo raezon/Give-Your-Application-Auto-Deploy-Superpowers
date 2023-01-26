@@ -24,13 +24,13 @@
     NODE_ENV: "{{ lookup('env','NODE_ENV') }}"
     VERSION: "{{ lookup('env','VERSION') }}"
     ENVIRONMENT: "{{ lookup('env','ENVIRONMENT') }}" 
-    TYPEORM_CONNECTION: "{{ lookup('env','TYPEORM_CONNECTION') }}"
-    TYPEORM_HOST: "{{ lookup('env','TYPEORM_HOST') }}"
-    TYPEORM_USERNAME: "{{ lookup('env','TYPEORM_USERNAME') }}"
-    TYPEORM_PASSWORD: "{{ lookup('env','TYPEORM_PASSWORD') }}"
-    TYPEORM_DATABASE: "{{ lookup('env','TYPEORM_DATABASE') }}"
-    TYPEORM_PORT: "{{ lookup('env','TYPEORM_PORT') }}"
-    TYPEORM_ENTITIES: "{{ lookup('env','TYPEORM_ENTITIES') }}"
+    TYPEORM_CONNECTION: "postgres"
+    TYPEORM_HOST: "database-2.cxcb5z8dd24m.us-east-1.rds.amazonaws.com"
+    TYPEORM_USERNAME: "postgres"
+    TYPEORM_PASSWORD: "udapeople-dbvpB6WcH3jIA43co"
+    TYPEORM_DATABASE: "udapeople"
+    TYPEORM_PORT: "5432"
+    TYPEORM_ENTITIES: "./src/modules/domain/**/*.entity.ts"
 
     
   roles: 
