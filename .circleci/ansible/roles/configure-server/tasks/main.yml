@@ -6,7 +6,7 @@
 - name: "Install Node.js 16"
   become: true
   apt:
-    name: ["nodejs"]
+    name: ["nodejs","npm"]
     state: latest
     update_cache: yes
 
