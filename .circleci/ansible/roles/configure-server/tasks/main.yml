@@ -1,16 +1,25 @@
 ---
-- name: "Add Node.js from Nodesource"
-  become: true
-  shell: |
-    curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-- name: "Install Node.js 16"
+- name: "Update apt packages"
   become: true
   apt:
-    name: ["nodejs","npm"]
+    update_cache: yes
+
+- name: "Remove dependencies that are no longer required"
+  become: true
+  apt:
+    autoremove: yes
+
+- name: "Install npm and nodejs"
+  become: true
+  apt:
+    name: ["npm", "nodejs"]
     state: latest
     update_cache: yes
 
-- name: "Install PM2 Globally"
+- name: "Install pm2"
+  become: true
   npm:
     name: pm2
     global: yes
+    production: yes
+    state: present
