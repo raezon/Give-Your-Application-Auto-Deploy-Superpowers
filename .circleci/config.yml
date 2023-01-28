@@ -323,7 +323,7 @@ jobs:
       - revert-migrations
       - notify_on_failure
 
-   smoke-test:
+  smoke-test:
     docker:
       - image: cimg/base:stable
     steps:
@@ -356,7 +356,7 @@ jobs:
             fi
       - destroy-environment
       - revert-migrations
-      - notify_on_failure  
+      - notify_on_failure
 
   # cloudfront-update:
   #   docker:
