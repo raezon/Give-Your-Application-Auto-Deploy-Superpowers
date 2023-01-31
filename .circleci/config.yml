@@ -370,8 +370,8 @@ jobs:
             WorkflowID=$(aws cloudformation \
             list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
             --no-paginate --output text)
-            curl https://kvdb.io/${KVDB_BUCKET_ID}/workflowid -d '$WorkflowID'
-          #  curl -H "Content-Type: text/plain" -H "token: ecdfc255-81e1-4056-9efa-2d7fa10812e1" --request PUT --data "$WorkflowID" https://api.memstash.io/values/workflowid
+            curl https://kvdb.io/${KVDB_BUCKET_ID}/workflowid -d "${WorkflowID}"
+
       - run:
           name: Update cloudfront distribution
           command: |
