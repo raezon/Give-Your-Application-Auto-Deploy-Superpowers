@@ -390,7 +390,7 @@ jobs:
       - run:
           name: Remove old stacks and files
           command: |
-            OldWorkflowID=$(curl https://kvdb.io/${KVDB_BUCKET_ID}/workflowid -d '1')
+            OldWorkflowID=$(curl https://kvdb.io/${KVDB_BUCKET_ID}/workflowid )
             CurrentWorkflowID=${CIRCLE_WORKFLOW_ID:0:7}
             if [[ ${OldWorkflowID} == "" ]]
             then
