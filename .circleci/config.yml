@@ -397,7 +397,7 @@ jobs:
             then
             echo "No workflow id found"
             else
-            if [[ "$CurrentWorkflowID" != "$OldWorkflowID" ]]
+            if [[ "${CurrentWorkflowID}" != "${OldWorkflowID}" ]]
             then
               echo "$OldWorkflowID!=$CurrentWorkflowID => will delete old version"
               aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
